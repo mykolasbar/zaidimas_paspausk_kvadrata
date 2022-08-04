@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07 15 žaidimas</title>
+    <style>
+        #laikrodis {
+            height:40px;
+            width:40px;
+            animation: pulse 1s infinite;
+            border-color:black;
+            border-radius:50%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:20px;
+            font-weight:500;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(35, 1, 1, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="display:flex; justify-content:space-between">
+    <div id = "container" style="width:950px; height: 650px; border-color:black; border-style:dashed;">
+        <div id = "kvadratas" style="display:block; width:50px; height: 50px; border:1px; background-color:green; position:relative"></div>
+    </div>
+    <div class = "rezultatai" style="padding-left:50px">
+        <button id = "pradeti" style=" display: inline-block; ">Pradėti</button>
+        <button id = "pradetiisnaujo" style=" display: inline-block; ">Žaisti iš naujo</button>
+        <h3>1 raundas</h3>
+        <p id="round1"></p>
+        <h3>2 raundas</h3>
+        <p id="round2"></p>
+        <h3>3 raundas</h3></p>
+        <p id="round3">
+        <h3>4 raundas</h3></p>
+        <p id="round4">
+        <h3>5 raundas</h3></p>
+        <p id="round5">
+        <h3>6 raundas</h3></p>
+        <p id="round6">
+        <h3>7 raundas</h3></p>
+        <p id="round7">
+        <h3>8 raundas</h3></p>
+        <p id="round8">
+        <h3>9 raundas</h3></p>
+        <p id="round9">
+        <h3>10 raundas</h3></p>
+        <p id="round10"></p>
+        <p id = "galutinis"></p>
+    </div>
+    <div id = "laikrodis" style="color:red"></div>
+    </div>
+    <script>
+        let kvadratas = document.getElementById("kvadratas")
+
+        let pradeti = document.getElementById("pradeti")
+
+        let pradetiisnaujo = document.getElementById("pradetiisnaujo")
+
+        let counter = 0
+        let bototaskai = 0
+        let zaidejotaskai = 0
+        let round = 1
+        zaidejolaimetiraundai = 0
+        botolaimetiraundai = 0
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min)
+            }
+
+        function pozicijosKeitimas () {           
+            let xjudejimas = getRandomInt(0, 900)
+            let yjudejimas = getRandomInt(0, 600)
+            let spalva = getRandomInt(0, 5)
+            if (spalva === 0)
+            kvadratas.style.backgroundColor = "red"
+            if (spalva === 1)
+            kvadratas.style.backgroundColor = "green"
+            if (spalva === 2)
+            kvadratas.style.backgroundColor = "blue"
+            if (spalva === 3)
+            kvadratas.style.backgroundColor = "yellow"
+            if (spalva === 4)
+            kvadratas.style.backgroundColor = "pink"
+            kvadratas.style.left = xjudejimas + 'px';
+            kvadratas.style.top = yjudejimas + 'px';
+            bototaskai++
+            counter++
+            document.getElementById("laikrodis").innerHTML = counter
+            // if (zaidejotaskai > 5) {zaidejotaskai = 5; bototaskai = 0} 
+            if (counter >= 5) {                
+            if (zaidejotaskai > bototaskai)
+            {document.getElementById("round"+round).innerHTML = 'Jūsų taškai: ' + zaidejotaskai + '; Kompiuterio taškai: ' + bototaskai + '. Raundą laimėjote jūs!';
+            zaidejolaimetiraundai++}
+            if (zaidejotaskai < bototaskai)
+            {document.getElementById("round"+round).innerHTML = 'Jūsų taškai: ' + zaidejotaskai + '; Kompiuterio taškai: ' + bototaskai + '. Raundą laimėjo kompiuteris.'
+            botolaimetiraundai++}
+            round++
+            pradeti.textContent = 'Sekantis raundas'
+            clearInterval(intervalas);
+            pradeti.addEventListener('click', raundas)
+            }
+            if (round > 10) 
+                {if(zaidejolaimetiraundai > botolaimetiraundai)
+                document.getElementById("galutinis").innerHTML = 'Jūsų laimėti raundai: ' + zaidejolaimetiraundai + ' Kompiuterio laimėti raundai: ' + botolaimetiraundai + '. Nugalėtojas - jūs!'
+                if(zaidejolaimetiraundai < botolaimetiraundai)
+                document.getElementById("galutinis").innerHTML = 'Jūsų laimėti raundai: ' + zaidejolaimetiraundai + ' Kompiuterio laimėti raundai: ' + botolaimetiraundai + '. Pralaimėjote prieš kompiuterį.'
+                pradeti.style.display = "none"
+            }
+            }
+
+        pradeti.addEventListener('click', raundas)
+
+        pradetiisnaujo.addEventListener('click', zaistiisnaujo)
+
+
+        let paspausta = false
+        let paspaudimai = 0
+            kvadratas.addEventListener('click', function skaiciavimas() {
+            if (kvadratas.paspausta = true) {
+            paspaudimai++
+            zaidejotaskai++
+            bototaskai--
+            console.log(paspaudimai)
+            
+        } 
+            })
+
+        function raundas(){
+            counter = 0
+            bototaskai = 0 
+            zaidejotaskai = 0       
+            intervalas = setInterval(pozicijosKeitimas, 1000)
+            pradeti.removeEventListener('click', raundas)
+        }
+
+        function zaistiisnaujo(){ 
+            document.querySelectorAll('div.rezultatai > p').forEach(el => el.innerHTML = '')
+            round = 1
+            counter = 0
+            bototaskai = 0 
+            zaidejotaskai = 0       
+            intervalas = setInterval(pozicijosKeitimas, 1000)
+            pradeti.style.display = "inline-block"
+        }
+    </script>
+</body>
+</html>
